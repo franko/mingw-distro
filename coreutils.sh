@@ -2,11 +2,12 @@
 
 source ./0_append_distro_path.sh
 
+download_archive http://ftp.gnu.org/gnu/coreutils/coreutils-8.30.tar.xz
 untar_file coreutils-8.30.tar
 
-patch -d /c/temp/gcc/coreutils-8.30 -p1 < coreutils.patch
+patch -d "$X_BUILD_DIR/coreutils-8.30" -p1 < coreutils.patch
 
-cd /c/temp/gcc
+cd "$X_BUILD_DIR"
 mv coreutils-8.30 src
 mkdir -p build dest/bin
 
@@ -19,16 +20,16 @@ echo "/* ignore */" > src/lib/userspec.c
 
 cd build
 echo "ac_cv_header_pthread_h=no" > config.site
-export CONFIG_SITE=/c/temp/gcc/build/config.site
+export CONFIG_SITE="$X_BUILD_DIR/build/config.site"
 
 ../src/configure --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 \
---prefix=/c/temp/gcc/dest
+--prefix="$X_BUILD_DIR/dest"
 
 touch src/make-prime-list
 make $X_MAKE_JOBS -k "CFLAGS=-O3" "LDFLAGS=-s" || true
 cd src
 mv sort.exe uniq.exe wc.exe ../../dest/bin
-cd /c/temp/gcc
+cd "$X_BUILD_DIR"
 rm -rf build src
 mv dest coreutils-8.30
 cd coreutils-8.30

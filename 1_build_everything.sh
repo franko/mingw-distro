@@ -3,8 +3,13 @@
 source ./0_append_distro_path.sh
 
 ./binutils.sh
+echo SKIPPING
+cat << EOF
 ./boost.sh
+EOF
 ./coreutils.sh
+echo SKIPPING
+cat << EOF
 ./freetype.sh
 ./gdb.sh
 ./glbinding.sh
@@ -13,8 +18,10 @@ source ./0_append_distro_path.sh
 ./lame.sh
 ./libjpeg-turbo.sh
 ./libpng.sh
+EOF
 ./make.sh
 ./mingw-w64+gcc.sh
+exit 1
 ./optipng.sh
 ./pcre.sh
 ./pcre2.sh
