@@ -26,7 +26,8 @@ mkdir -p "$X_BUILD_DIR"
 function download_archive {
     local archive_ext="${1##*\.}"
     local name="${1##*/}"
-    curl -L "$1" -o "$X_DOWNLOADS_DIR/$name"
+    # The -k option below is to ignore bad SSL certs.
+    curl -k -L "$1" -o "$X_DOWNLOADS_DIR/$name"
     pushd "$X_DOWNLOADS_DIR"
     case $archive_ext in
     gz)
@@ -34,6 +35,12 @@ function download_archive {
         ;;
     xz)
         unxz "$name"
+        ;;
+    lz)
+        lzip -d "$name"
+        ;;
+    bz2)
+        bunzip2 "$name"
         ;;
     *)
         echo "unknown compression format $archive_type"

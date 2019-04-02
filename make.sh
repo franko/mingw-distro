@@ -2,7 +2,7 @@
 
 source ./0_append_distro_path.sh
 
-download_archive https://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz
+download_archive http://ftp.gnu.org/gnu/make/make-4.2.1.tar.gz
 untar_file make-4.2.1.tar
 
 cd "$X_BUILD_DIR"
