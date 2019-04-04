@@ -7,16 +7,6 @@ set -u
 if [ "${PS1:-}" == "" ]; then set -e; fi
 
 source ./0_sources.sh
-export X_DISTRO_ROOT=/c/mingw
-
-export X_DISTRO_BIN=$X_DISTRO_ROOT/bin
-export X_DISTRO_INC=$X_DISTRO_ROOT/include
-export X_DISTRO_LIB=$X_DISTRO_ROOT/lib
-
-export PATH=$PATH:$X_DISTRO_BIN
-
-export C_INCLUDE_PATH=$X_DISTRO_INC
-export CPLUS_INCLUDE_PATH=$X_DISTRO_INC
 
 X_DOWNLOADS_DIR=/c/temp/mingw-build/downloads
 X_BUILD_DIR=/c/temp/mingw-build/sources
