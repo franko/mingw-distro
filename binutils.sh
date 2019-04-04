@@ -2,11 +2,12 @@
 
 source ./0_append_distro_path.sh
 
-download_archive http://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.gz
-untar_file binutils-2.31.1.tar
+get_archive binutils
+
+BINUTILS_DIR="${X_SOURCES_DIR[binutils]}"
 
 cd "$X_BUILD_DIR"
-mv binutils-2.31.1 src
+mv "$BINUTILS_DIR" src
 mkdir build dest
 cd build
 
@@ -17,8 +18,8 @@ make $X_MAKE_JOBS all "CFLAGS=-O3" "LDFLAGS=-s"
 make $X_MAKE_JOBS install
 cd "$X_BUILD_DIR"
 rm -rf build src
-mv dest binutils-2.31.1
-cd binutils-2.31.1
+mv dest "$BINUTILS_DIR"
+cd "$BINUTILS_DIR"
 rm -rf lib/*.la share
 
-7z -mx0 a ../binutils-2.31.1.7z *
+7z -mx0 a "../$BINUTILS_DIR.7z" *

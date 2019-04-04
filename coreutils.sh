@@ -2,13 +2,11 @@
 
 source ./0_append_distro_path.sh
 
-download_archive http://ftp.gnu.org/gnu/coreutils/coreutils-8.30.tar.xz
-untar_file coreutils-8.30.tar
-
-patch -d "$X_BUILD_DIR/coreutils-8.30" -p1 < coreutils.patch
+get_archive coreutils
+COREUTILS_DIR="${X_SOURCES_DIR[coreutils]}"
 
 cd "$X_BUILD_DIR"
-mv coreutils-8.30 src
+mv "$COREUTILS_DIR" src
 mkdir -p build dest/bin
 
 # Missing <sys/wait.h>.
@@ -31,7 +29,7 @@ cd src
 mv sort.exe uniq.exe wc.exe ../../dest/bin
 cd "$X_BUILD_DIR"
 rm -rf build src
-mv dest coreutils-8.30
-cd coreutils-8.30
+mv dest "$COREUTILS_DIR"
+cd "$COREUTILS_DIR"
 
-7z -mx0 a ../coreutils-8.30.7z *
+7z -mx0 a "../$COREUTILS_DIR.7z" *

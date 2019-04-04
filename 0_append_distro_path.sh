@@ -6,6 +6,7 @@ set -u
 # Exit when a command fails.
 if [ "${PS1:-}" == "" ]; then set -e; fi
 
+source ./0_sources.sh
 export X_DISTRO_ROOT=/c/mingw
 
 export X_DISTRO_BIN=$X_DISTRO_ROOT/bin
@@ -23,34 +24,47 @@ X_BUILD_DIR=/c/temp/mingw-build/sources
 mkdir -p "$X_DOWNLOADS_DIR"
 mkdir -p "$X_BUILD_DIR"
 
-function download_archive {
-    local archive_ext="${1##*\.}"
-    local name="${1##*/}"
-    # The -k option below is to ignore bad SSL certs.
-    curl -k -L "$1" -o "$X_DOWNLOADS_DIR/$name"
-    pushd "$X_DOWNLOADS_DIR"
+function archive_uncompress {
+    local archive_ext="${1##*.}"
     case $archive_ext in
     gz)
-        gunzip "$name"
+        gunzip "$1"
         ;;
     xz)
-        unxz "$name"
+        unxz "$1"
         ;;
     lz)
-        lzip -d "$name"
+        lzip -d "$1"
         ;;
     bz2)
-        bunzip2 "$name"
+        bunzip2 "$1"
         ;;
     *)
-        echo "unknown compression format $archive_type"
-	exit 1
+        echo "unknown compression format $archive_ext"
+        exit 1
     esac
-    popd
 }
 
-function untar_file {
-    tar --extract --directory="$X_BUILD_DIR" --file="$X_DOWNLOADS_DIR/$1"
+function get_archive {
+    local archive_url="${X_SOURCES[$1]}"
+    local archive_ext="${archive_url##*.}"
+    local name="${archive_url##*/}"
+    local sources_dir_name="${name%.tar.*}"
+
+    # The -k option below is to ignore bad SSL certs.
+    curl -k -L "$archive_url" -o "$X_DOWNLOADS_DIR/$name"
+    pushd "$X_DOWNLOADS_DIR"
+    archive_uncompress "$name"
+    tar --extract --directory="$X_BUILD_DIR" --file="${name%.*}"
+    popd
+
+    if [ ${X_SOURCES_PATCH[$1]+x} ]; then
+        echo "Applying patch: ${X_SOURCES_PATCH[$1]}"
+        patch -d "$X_BUILD_DIR/$sources_dir_name" -p1 < "${X_SOURCES_PATCH[$1]}"
+    fi
+
+    # set the package's directory name
+    X_SOURCES_DIR[$1]="$sources_dir_name"
 }
 
 export X_MAKE_JOBS="-j$NUMBER_OF_PROCESSORS -O"

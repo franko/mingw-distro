@@ -2,30 +2,19 @@
 
 source ./0_append_distro_path.sh
 
-download_archive http://gmplib.org/download/gmp/gmp-6.1.2.tar.lz
-download_archive https://ftp.gnu.org/gnu/mpfr/mpfr-4.0.1.tar.gz
-download_archive https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz
-download_archive http://isl.gforge.inria.fr/isl-0.20.tar.gz
-download_archive https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
-download_archive https://ftp.gnu.org/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.gz
-
-# Extract vanilla sources.
-untar_file gmp-6.1.2.tar
-untar_file mpfr-4.0.1.tar
-untar_file mpc-1.1.0.tar
-untar_file isl-0.20.tar
-untar_file mingw-w64-v6.0.0.tar
-untar_file gcc-8.2.0.tar
-
-# Fixed upstream: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86724
-patch -d "$X_BUILD_DIR/gcc-8.2.0" -p1 < gcc-bug-86724.patch
-
-patch -Z -d "$X_BUILD_DIR/mpfr-4.0.1" -p1 < mpfr-4.0.1-p13.patch
+get_archive gmp
+get_archive mpfr
+get_archive mpc
+get_archive isl
+get_archive mingw-w64
+get_archive gcc
 
 cd "$X_BUILD_DIR"
 
+MINGW_DIR="${X_SOURCES_DIR[mingw-w64]}"
+
 # Build mingw-w64 and winpthreads.
-mv mingw-w64-v6.0.0 src
+mv "$MINGW_DIR" src
 mkdir build-mingw-w64 dest
 cd build-mingw-w64
 
@@ -46,11 +35,11 @@ cd "$X_BUILD_DIR"
 rm -rf build-mingw-w64 src
 
 # Prepare to build gcc.
-mv gcc-8.2.0 src
-mv gmp-6.1.2 src/gmp
-mv mpfr-4.0.1 src/mpfr
-mv mpc-1.1.0 src/mpc
-mv isl-0.20 src/isl
+mv "${X_SOURCES_DIR[gcc]}" src
+mv "${X_SOURCES_DIR[gmp]}" src/gmp
+mv "${X_SOURCES_DIR[mpfr]}" src/mpfr
+mv "${X_SOURCES_DIR[mpc]}" src/mpc
+mv "${X_SOURCES_DIR[isl]}" src/isl
 
 # Prepare to build gcc - perform magic directory surgery.
 cp -r dest/x86_64-w64-mingw32/lib dest/x86_64-w64-mingw32/lib64
