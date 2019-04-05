@@ -11,10 +11,8 @@ get_archive gcc
 
 cd "$X_BUILD_DIR"
 
-MINGW_DIR="${X_SOURCES_DIR[mingw-w64]}"
-
 # Build mingw-w64 and winpthreads.
-mv "$MINGW_DIR" src
+mv mingw-w64 src
 mkdir build-mingw-w64 dest
 cd build-mingw-w64
 
@@ -35,11 +33,10 @@ cd "$X_BUILD_DIR"
 rm -rf build-mingw-w64 src
 
 # Prepare to build gcc.
-mv "${X_SOURCES_DIR[gcc]}" src
-mv "${X_SOURCES_DIR[gmp]}" src/gmp
-mv "${X_SOURCES_DIR[mpfr]}" src/mpfr
-mv "${X_SOURCES_DIR[mpc]}" src/mpc
-mv "${X_SOURCES_DIR[isl]}" src/isl
+mv gcc src
+for subdir in gmp mpfr mpc isl; do
+    mv "$subdir" "src/$subdir"
+done
 
 # Prepare to build gcc - perform magic directory surgery.
 cp -r dest/x86_64-w64-mingw32/lib dest/x86_64-w64-mingw32/lib64

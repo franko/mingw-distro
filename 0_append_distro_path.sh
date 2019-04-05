@@ -48,13 +48,13 @@ function get_archive {
     tar --extract --directory="$X_BUILD_DIR" --file="${name%.*}"
     popd
 
+    # Rename the directory as the package, without version number
+    mv "$X_BUILD_DIR/$sources_dir_name" "$X_BUILD_DIR/$1"
+
     if [ ${X_SOURCES_PATCH[$1]+x} ]; then
         echo "Applying patch: ${X_SOURCES_PATCH[$1]}"
-        patch -d "$X_BUILD_DIR/$sources_dir_name" -p1 < "${X_SOURCES_PATCH[$1]}"
+        patch -d "$X_BUILD_DIR/$1" -p1 < "${X_SOURCES_PATCH[$1]}"
     fi
-
-    # set the package's directory name
-    X_SOURCES_DIR[$1]="$sources_dir_name"
 }
 
 export X_MAKE_JOBS="-j$NUMBER_OF_PROCESSORS -O"

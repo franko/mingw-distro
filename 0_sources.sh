@@ -1,4 +1,4 @@
-declare -x -A X_SOURCES X_SOURCES_DIR X_SOURCES_PATCH
+declare -x -A X_SOURCES X_SOURCES_PATCH
 
 X_SOURCES[binutils]="http://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.gz"
 X_SOURCES[coreutils]="http://ftp.gnu.org/gnu/coreutils/coreutils-8.30.tar.xz"
@@ -17,3 +17,13 @@ X_SOURCES[mingw-w64]="https://downloads.sourceforge.net/project/mingw-w64/mingw-
 X_SOURCES[gcc]="https://ftp.gnu.org/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.gz"
 # Fixed upstream: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86724
 X_SOURCES_PATCH[gcc]="gcc-bug-86724.patch"
+
+# Takes the download URL and returns the full name of the package, including
+# its version.
+function package_version_name {
+    local archive_url="${X_SOURCES[$1]}"
+    local name="${archive_url##*/}"
+    echo "${name%.tar.*}"
+}
+
+export -f package_version_name
