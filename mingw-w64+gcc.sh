@@ -85,4 +85,4 @@ rm -rf bin/c++.exe bin/x86_64-w64-mingw32-* share
 rm -rf mingw x86_64-w64-mingw32/lib64
 find -name "*.exe" -type f -print -exec strip -s {} ";"
 
-7z -mx0 a ../mingw-w64+gcc.7z *
+tar czf "../mingw-w64-gcc-$(package_version_name gcc).tar.gz" *

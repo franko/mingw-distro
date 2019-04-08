@@ -20,4 +20,4 @@ rm -rf src
 mv dest make
 cd make
 
-7z -mx0 a "../$(package_version_name make).7z" *
+tar czf "../$(package_version_name make).tar.gz" *

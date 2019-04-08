@@ -20,4 +20,4 @@ mv dest binutils
 cd binutils
 rm -rf lib/*.la share
 
-7z -mx0 a "../$(package_version_name binutils).7z" *
+tar czf "../$(package_version_name binutils).tar.gz" *

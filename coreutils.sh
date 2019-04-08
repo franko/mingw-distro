@@ -31,4 +31,4 @@ rm -rf build src
 mv dest coreutils
 cd coreutils
 
-7z -mx0 a "../$(package_version_name coreutils).7z" *
+tar czf "../$(package_version_name coreutils).tar.gz" *
