@@ -2,25 +2,25 @@
 
 source ./0_append_distro_path.sh
 
-untar_file boost_1_69_0.tar
+get_archive boost
 
-cd /c/temp/gcc
-mv boost_1_69_0 src
+cd "$X_BUILD_DIR"
+mv boost src
 mkdir -p dest/include
 cd src
 
 ./bootstrap.sh
 
 ./b2 $X_B2_JOBS address-model=64 link=static runtime-link=static threading=multi variant=release \
---stagedir=/c/temp/gcc/dest stage
+--stagedir="$X_BUILD_DIR/dest" stage
 
-cd /c/temp/gcc/dest/lib
+cd "$X_BUILD_DIR/dest/lib"
 for i in *.a; do mv $i ${i%-mgw*.a}.a; done
-cd /c/temp/gcc
+cd "$X_BUILD_DIR"
 mv src/boost dest/include
 rm -rf src
 
-mv dest boost-1.69.0
-cd boost-1.69.0
+mv dest boost
+cd boost
 
-7z -mx0 a ../boost-1.69.0.7z *
+tar czf "../$(package_version_name boost).tar.gz" *

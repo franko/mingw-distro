@@ -18,6 +18,8 @@ X_SOURCES[gcc]="https://ftp.gnu.org/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.gz"
 # Fixed upstream: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86724
 X_SOURCES_PATCH[gcc]="gcc-bug-86724.patch"
 
+X_SOURCES[boost]="https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz"
+
 # Takes the download URL and returns the full name of the package, including
 # its version.
 function package_version_name {
