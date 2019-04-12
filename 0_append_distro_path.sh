@@ -36,7 +36,7 @@ function archive_uncompress {
 }
 
 function get_archive {
-    local archive_url="${X_SOURCES[$1]}"
+    local archive_url="$2"
     local archive_ext="${archive_url##*.}"
     local name="${archive_url##*/}"
     local sources_dir_name="${name%.tar.*}"
@@ -51,10 +51,10 @@ function get_archive {
     # Rename the directory as the package, without version number
     mv "$X_BUILD_DIR/$sources_dir_name" "$X_BUILD_DIR/$1"
 
-    if [ ${X_SOURCES_PATCH[$1]+x} ]; then
-        echo "Applying patch: ${X_SOURCES_PATCH[$1]}"
-        patch -d "$X_BUILD_DIR/$1" -p1 < "${X_SOURCES_PATCH[$1]}"
-    fi
+    # if [ ${X_SOURCES_PATCH[$1]+x} ]; then
+    #     echo "Applying patch: ${X_SOURCES_PATCH[$1]}"
+    #     patch -d "$X_BUILD_DIR/$1" -p1 < "${X_SOURCES_PATCH[$1]}"
+    # fi
 }
 
 export X_MAKE_JOBS="-j$NUMBER_OF_PROCESSORS -O"
