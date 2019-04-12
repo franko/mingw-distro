@@ -19,6 +19,7 @@ X_SOURCES[gcc]="https://ftp.gnu.org/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.gz"
 X_SOURCES_PATCH[gcc]="gcc-bug-86724.patch"
 
 X_SOURCES[boost]="https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz"
+X_SOURCES[gdb]="https://ftp.gnu.org/gnu/gdb/gdb-8.2.1.tar.gz"
 
 # Takes the download URL and returns the full name of the package, including
 # its version.
